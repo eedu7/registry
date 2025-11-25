@@ -10,20 +10,14 @@
     },
     "files": {
         "ignoreUnknown": false,
-        "includes": [
-            "**",
-            "!node_modules",
-            "!.next",
-            "!dist",
-            "!build",
-            "!src-tauri"
-        ]
+        "includes": ["**", "!node_modules", "!.next", "!dist", "!build", "!src-tauri"]
     },
     "formatter": {
         "bracketSpacing": true,
         "enabled": true,
         "indentStyle": "space",
-        "indentWidth": 4
+        "indentWidth": 4,
+        "lineWidth": 120
     },
     "javascript": {
         "formatter": {
