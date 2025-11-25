@@ -1,0 +1,51 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.3.7/schema.json",
+    "assist": {
+        "actions": {
+            "source": {
+                "organizeImports": "on"
+            }
+        },
+        "enabled": true
+    },
+    "files": {
+        "ignoreUnknown": false,
+        "includes": [
+            "**",
+            "!node_modules",
+            "!.next",
+            "!dist",
+            "!build",
+            "!src-tauri"
+        ]
+    },
+    "formatter": {
+        "bracketSpacing": true,
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 4
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "double"
+        }
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "correctness": {
+                "noChildrenProp": "off"
+            },
+            "recommended": true,
+            "suspicious": {
+                "noUnknownAtRules": "off"
+            }
+        }
+    },
+    "vcs": {
+        "clientKind": "git",
+        "enabled": true,
+        "useIgnoreFile": true
+    },
+    
+}
