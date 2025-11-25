@@ -177,6 +177,38 @@ fn get_member_by_cnic(app_handle: tauri::AppHandle, cnic_number: String) -> Resu
     Ok(member)
 }
 
+
+#[tauri::command]
+fn get_member_by_id(app_handle: tauri::AppHandle, id: i64) -> Result<Option<Member>, String> {
+    let db_path = get_db_path(&app_handle);
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+
+    let mut stmt = conn
+        .prepare("SELECT id, name, father_husband_name, gender, cnic_number, date_of_birth, date_of_issue, date_of_expiry, cnic_front_image, cnic_back_image FROM members WHERE id = ?1")
+        .map_err(|e| e.to_string())?;
+
+    let member = stmt
+        .query_row([id], |row| {
+            Ok(Member {
+                id: row.get(0)?,
+                name: row.get(1)?,
+                father_husband_name: row.get(2)?,
+                gender: row.get(3)?,
+                cnic_number: row.get(4)?,
+                date_of_birth: row.get(5)?,
+                date_of_issue: row.get(6)?,
+                date_of_expiry: row.get(7)?,
+                cnic_front_image: row.get(8)?,
+                cnic_back_image: row.get(9)?,
+            })
+        })
+        .optional()
+        .map_err(|e| e.to_string())?;
+
+    Ok(member)
+}
+
+
 #[tauri::command]
 fn delete_member(app_handle: tauri::AppHandle, id: i64) -> Result<String, String> {
     let db_path = get_db_path(&app_handle);
@@ -206,6 +238,7 @@ pub fn run() {
             add_member,
             get_all_members,
             get_member_by_cnic,
+            get_member_by_id,
             update_member,
             delete_member
         ])

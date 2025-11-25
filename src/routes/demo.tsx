@@ -48,16 +48,15 @@ function App() {
             const allMembers = await invoke<Member[]>("get_all_members");
             setMembers(allMembers);
         } catch (error) {
-            showMessage(`Error loading members: ${error}`, "error");
+            showMessage(`Error loading members: ${error}`);
         }
     };
 
-    const showMessage = (msg: string, type: "success" | "error" = "success") => {
+    const showMessage = (msg: string) => {
         setMessage(msg);
         setTimeout(() => setMessage(""), 3000);
     };
 
-    // Convert file to byte array
     const fileToByteArray = (file: File): Promise<number[]> => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -86,13 +85,13 @@ function App() {
 
         // Validate file type
         if (!file.type.startsWith("image/")) {
-            showMessage("Please select an image file", "error");
+            showMessage("Please select an image file");
             return;
         }
 
         // Validate file size (5MB limit)
         if (file.size > 5 * 1024 * 1024) {
-            showMessage("Image size must be less than 5MB", "error");
+            showMessage("Image size must be less than 5MB");
             return;
         }
 
@@ -102,9 +101,9 @@ function App() {
                 ...formData,
                 [imageType === "front" ? "cnic_front_image" : "cnic_back_image"]: byteArray,
             });
-            showMessage(`${imageType === "front" ? "Front" : "Back"} image uploaded successfully`);
+            showMessage(`${imageType === `front` ? `Front` : `Back`} image uploaded successfully`);
         } catch (error) {
-            showMessage(`Error uploading image: ${error}`, "error");
+            showMessage(`Error uploading image: ${error}`);
         }
     };
 
@@ -126,7 +125,7 @@ function App() {
             resetForm();
             loadMembers();
         } catch (error) {
-            showMessage(`Error: ${error}`, "error");
+            showMessage(`Error: ${error}`);
         }
     };
 
@@ -143,7 +142,7 @@ function App() {
                 showMessage("Member deleted successfully!");
                 loadMembers();
             } catch (error) {
-                showMessage(`Error: ${error}`, "error");
+                showMessage(`Error: ${error}`);
             }
         }
     };
@@ -162,11 +161,11 @@ function App() {
             if (member) {
                 setMembers([member]);
             } else {
-                showMessage("No member found with this CNIC", "error");
+                showMessage("No member found with this CNIC");
                 setMembers([]);
             }
         } catch (error) {
-            showMessage(`Error: ${error}`, "error");
+            showMessage(`Error: ${error}`);
         }
     };
 
