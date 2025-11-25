@@ -6,7 +6,7 @@ export const MemberPageView = () => {
         <div className="w-full h-full">
             <div className="grid grid-cols-2 w-full h-full gap-4">
                 <div className="flex items-center justify-center w-full p-4">
-                    <Card className="w-full max-w-lg">
+                    <Card className="w-full shadow-none border-none">
                         <CardHeader>
                             <CardTitle>Form</CardTitle>
                             <CardDescription>Form Description</CardDescription>
