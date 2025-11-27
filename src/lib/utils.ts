@@ -33,3 +33,14 @@ export function byteArrayToBase64(byteArray: number[] | null | undefined): strin
     });
     return `data:image/jpeg;base64,${btoa(binary)}`;
 }
+
+export function formatCnic(value: string | number): string | null {
+    // Convert to string and remove all non-digits
+    const digits = String(value).replace(/\D/g, "");
+
+    // CNIC must be exactly 13 digits
+    if (digits.length !== 13) return null;
+
+    // Format: 5 digits - 7 digits - 1 digit
+    return `${digits.slice(0, 5)}-${digits.slice(5, 12)}-${digits.slice(12)}`;
+}

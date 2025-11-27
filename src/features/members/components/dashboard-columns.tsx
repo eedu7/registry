@@ -1,16 +1,17 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDownIcon, ClipboardCopyIcon, MoreVerticalIcon } from "lucide-react";
+import { ArrowUpDownIcon, ClipboardCopyIcon, Edit3Icon, ImageIcon, MoreVerticalIcon, TrashIcon } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { Member } from "@/types/members";
+import { useCnicDrawerStore, useEditMemberSheetStore } from "../store/use-member-store";
+import { ConfirmDeleteMember } from "./confirm-delete-member";
 
 export const FormatDate = ({ value }: { value: string | Date }) => {
     const date = new Date(value);
@@ -100,28 +101,60 @@ export const columns: ColumnDef<Member>[] = [
         cell: ({ row }) => <FormatDate value={row.getValue("date_of_expiry")} />,
     },
     {
+        accessorKey: "cnic_images",
+        header: "View CNIC",
+        cell: ({ row }) => {
+            const { openDrawer } = useCnicDrawerStore();
+            const member = row.original;
+            return (
+                <Button
+                    variant="ghost"
+                    className="cursor-pointer font-normal"
+                    onClick={() =>
+                        openDrawer(member.cnic_front_image, member.cnic_back_image, member.name, member.cnic_number)
+                    }
+                >
+                    View
+                    <ImageIcon />
+                </Button>
+            );
+        },
+    },
+    {
         id: "actions",
         cell: ({ row }) => {
             const member = row.original;
+            const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+            const { openSheet } = useEditMemberSheetStore();
 
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreVerticalIcon className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => navigator.clipboard.writeText(member.cnic_number)}>
-                            Copy CNIC Number
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreVerticalIcon className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => openSheet(member)} className="cursor-pointer">
+                                <Edit3Icon className="size-4 text-blue-600" />
+                                <span className="text-blue-600">Edit</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setOpenDeleteDialog(true)} className="cursor-pointer">
+                                <TrashIcon className="size-4 text-rose-600" />
+                                <span className="text-rose-600">Delete</span>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    {member.id && (
+                        <ConfirmDeleteMember
+                            id={member.id}
+                            open={openDeleteDialog}
+                            onOpenChange={setOpenDeleteDialog}
+                        />
+                    )}
+                </>
             );
         },
     },
