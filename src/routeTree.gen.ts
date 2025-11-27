@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MembersIndexRouteImport } from './routes/members/index'
+import { Route as MembersDashboardIndexRouteImport } from './routes/members/dashboard/index'
 
 const DemoRoute = DemoRouteImport.update({
   id: '/demo',
@@ -28,35 +29,44 @@ const MembersIndexRoute = MembersIndexRouteImport.update({
   path: '/members/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MembersDashboardIndexRoute = MembersDashboardIndexRouteImport.update({
+  id: '/members/dashboard/',
+  path: '/members/dashboard/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/demo': typeof DemoRoute
   '/members': typeof MembersIndexRoute
+  '/members/dashboard': typeof MembersDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/demo': typeof DemoRoute
   '/members': typeof MembersIndexRoute
+  '/members/dashboard': typeof MembersDashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/demo': typeof DemoRoute
   '/members/': typeof MembersIndexRoute
+  '/members/dashboard/': typeof MembersDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo' | '/members'
+  fullPaths: '/' | '/demo' | '/members' | '/members/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo' | '/members'
-  id: '__root__' | '/' | '/demo' | '/members/'
+  to: '/' | '/demo' | '/members' | '/members/dashboard'
+  id: '__root__' | '/' | '/demo' | '/members/' | '/members/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DemoRoute: typeof DemoRoute
   MembersIndexRoute: typeof MembersIndexRoute
+  MembersDashboardIndexRoute: typeof MembersDashboardIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MembersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/members/dashboard/': {
+      id: '/members/dashboard/'
+      path: '/members/dashboard'
+      fullPath: '/members/dashboard'
+      preLoaderRoute: typeof MembersDashboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DemoRoute: DemoRoute,
   MembersIndexRoute: MembersIndexRoute,
+  MembersDashboardIndexRoute: MembersDashboardIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
