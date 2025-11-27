@@ -50,7 +50,6 @@ const formSchema = z.object({
         }),
     ),
 });
-type FormSchema = z.infer<typeof formSchema>;
 
 export const EditMember = () => {
     const { open, setOpen, data } = useEditMemberSheetStore();
