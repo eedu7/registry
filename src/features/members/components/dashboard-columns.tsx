@@ -13,15 +13,6 @@ import type { Member } from "@/types/members";
 import { useCnicDrawerStore, useEditMemberSheetStore } from "../store/use-member-store";
 import { ConfirmDeleteMember } from "./confirm-delete-member";
 
-export const FormatDate = ({ value }: { value: string | Date }) => {
-    const date = new Date(value);
-    if (isNaN(date.getTime())) return String(value);
-
-    const formattedDate = date.toLocaleDateString("en-GB").replace(/\//g, "-");
-
-    return <div>{formattedDate}</div>;
-};
-
 export const columns: ColumnDef<Member>[] = [
     {
         id: "select",
@@ -88,17 +79,14 @@ export const columns: ColumnDef<Member>[] = [
     {
         accessorKey: "date_of_birth",
         header: "Date of Birth",
-        cell: ({ row }) => <FormatDate value={row.getValue("date_of_birth")} />,
     },
     {
         accessorKey: "date_of_issue",
         header: "Date of Issue",
-        cell: ({ row }) => <FormatDate value={row.getValue("date_of_issue")} />,
     },
     {
         accessorKey: "date_of_expiry",
         header: "Date of Expiry",
-        cell: ({ row }) => <FormatDate value={row.getValue("date_of_expiry")} />,
     },
     {
         accessorKey: "cnic_images",

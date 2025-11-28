@@ -98,7 +98,7 @@ export const MemberForm = () => {
                         name: value.name,
                         date_of_birth: value.dateOfBirth,
                         date_of_expiry: value.dateOfExpiry,
-                        date_of_issue: value.dateOfExpiry,
+                        date_of_issue: value.dateOfIssue,
                         father_husband_name: value.fatherOrHusbandName,
                         gender: value.gender,
                         cnic_back_image: frontSideBytes,
